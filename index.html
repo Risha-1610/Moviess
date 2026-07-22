@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CINEVERSE | Majestic Movie Hub & Ticket Booking</title>
+  
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- External CSS Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <a href="#" class="brand">
+      <i class="fa-solid fa-film"></i> CINEVERSE
+    </a>
+
+    <div class="search-bar-container">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search movies, actors, or genres...">
+    </div>
+
+    <div class="nav-actions">
+      <button class="nav-btn" id="watchlistBtn" title="Saved Watchlist">
+        <i class="fa-solid fa-bookmark"></i>
+        <span class="badge" id="watchlistCount">0</span>
+      </button>
+      <button class="nav-btn" id="cartBtn" title="Shopping Cart">
+        <i class="fa-solid fa-ticket"></i>
+        <span class="badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main>
+    <!-- Featured Hero Banner Carousel -->
+    <section class="hero-banner" id="heroBanner">
+      <div class="hero-overlay">
+        <div class="hero-badge"><i class="fa-solid fa-fire"></i> FEATURED MOVIE OF THE MONTH</div>
+        <h1 class="hero-title" id="heroTitle">Loading...</h1>
+        <div class="hero-meta">
+          <span class="rating"><i class="fa-solid fa-star"></i> <span id="heroRating">9.2</span></span>
+          <span id="heroYear">2026</span>
+          <span id="heroGenre">Sci-Fi / Adventure</span>
+          <span id="heroDuration">2h 45m</span>
+        </div>
+        <p class="hero-description" id="heroDesc">Loading featured movie details...</p>
+        <div class="hero-actions">
+          <button class="btn-primary" id="heroBookBtn"><i class="fa-solid fa-ticket"></i> Book Tickets Now</button>
+          <button class="btn-secondary" id="heroTrailerBtn"><i class="fa-solid fa-play"></i> Watch Trailer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Genre Filter Tabs -->
+    <div class="controls-bar">
+      <h2 class="section-title">Now Showing in Cinemas</h2>
+      <div class="genre-pills" id="genrePills">
+        <button class="pill active" data-genre="All">All Movies</button>
+        <button class="pill" data-genre="Sci-Fi">Sci-Fi</button>
+        <button class="pill" data-genre="Action">Action</button>
+        <button class="pill" data-genre="Drama">Drama</button>
+        <button class="pill" data-genre="Animation">Animation</button>
+        <button class="pill" data-genre="Horror">Horror</button>
+      </div>
+    </div>
+
+    <!-- Movie Cards Grid -->
+    <div class="movie-grid" id="movieGrid"></div>
+  </main>
+
+  <!-- Movie Detail Modal -->
+  <div class="modal-backdrop" id="detailModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeDetailModal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="detail-hero" id="modalHeroBg">
+        <div class="detail-hero-overlay"></div>
+      </div>
+      <div class="detail-body">
+        <div class="detail-header">
+          <img src="" alt="Poster" class="detail-poster" id="modalPoster">
+          <div class="detail-info">
+            <h2 class="detail-title" id="modalTitle">Movie Title</h2>
+            <div class="detail-tags" id="modalTags"></div>
+            <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;" id="modalSynopsis"></p>
+            <div style="display: flex; gap: 1rem;">
+              <button class="btn-primary" id="modalBookBtn"><i class="fa-solid fa-ticket"></i> Select Showtimes & Seats</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cast-section">
+          <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Top Cast</h3>
+          <div class="cast-list" id="modalCastList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seat Booking Modal -->
+  <div class="modal-backdrop" id="bookingModal">
+    <div class="modal-box" style="max-width: 700px;">
+      <button class="modal-close" id="closeBookingModal"><i class="fa-solid fa-xmark"></i></button>
+      <div style="padding: 2rem;">
+        <h2 style="font-size: 1.6rem; margin-bottom: 0.5rem;" id="bookingMovieTitle">Select Seats</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Choose your preferred date, time, and IMAX seats.</p>
+
+        <!-- Format & Showtime selection -->
+        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <select id="timeSelect" style="background:#1e293b; color:#fff; border:1px solid var(--border-glow); padding:0.6rem; border-radius:8px;">
+            <option>Today - 4:30 PM (IMAX 3D)</option>
+            <option>Today - 7:45 PM (Dolby Cinema)</option>
+            <option>Tomorrow - 2:00 PM (Standard)</option>
+            <option>Tomorrow - 8:30 PM (IMAX 3D)</option>
+          </select>
+        </div>
+
+        <!-- Cinema Screen Visual -->
+        <div class="screen-container">
+          <div class="screen"></div>
+          <div class="screen-label">CINEMA SCREEN THIS WAY</div>
+        </div>
+
+        <!-- Seats Layout -->
+        <div class="seats-layout" id="seatsGrid"></div>
+
+        <div class="seat-legend">
+          <div class="legend-item"><div class="seat"></div> Available</div>
+          <div class="legend-item"><div class="seat selected"></div> Selected</div>
+          <div class="legend-item"><div class="seat occupied"></div> Occupied</div>
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-glow); padding-top: 1rem;">
+          <div>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Total Price:</span>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--gold-primary);" id="bookingTotalPrice">$0.00</div>
+          </div>
+          <button class="btn-primary" id="addToCartBtn" disabled><i class="fa-solid fa-cart-plus"></i> Add Tickets to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shopping Cart Slide-out Drawer -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3 style="display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-cart-shopping" style="color: var(--gold-primary);"></i> Your Ticket Cart</h3>
+      <button class="modal-close" id="closeCartDrawer" style="position: static;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="cart-items" id="cartItemsContainer"></div>
+
+    <div class="cart-summary">
+      <div class="promo-input">
+        <input type="text" id="promoCode" placeholder="Promo code (e.g., MAJESTIC20)">
+        <button class="btn-secondary" id="applyPromoBtn" style="padding: 0.6rem 1rem;">Apply</button>
+      </div>
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">$0.00</span>
+      </div>
+      <div class="summary-row">
+        <span>Discount</span>
+        <span id="cartDiscount" style="color: var(--success);">$0.00</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total Amount</span>
+        <span id="cartTotal" style="color: var(--gold-primary);">$0.00</span>
+      </div>
+      <button class="btn-primary" id="checkoutBtn" style="width: 100%; margin-top: 1.2rem; justify-content: center;"><i class="fa-solid fa-credit-card"></i> Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- External JS Script Link -->
+  <script src="script.js"></script>
+</body>
+</html>
